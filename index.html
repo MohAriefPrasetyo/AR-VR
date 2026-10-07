@@ -10,92 +10,57 @@
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; font-family: 'Segoe UI', sans-serif; }
+    body { overflow: hidden; background: transparent; }
 
-    /* Video kamera di BELAKANG */
-    video {
-      position: fixed !important;
-      top: 0 !important; left: 0 !important;
-      width: 100% !important; height: 100% !important;
-      object-fit: cover !important;
-      z-index: -1 !important;
-    }
-
-    /* Canvas AR TRANSPARAN supaya video terlihat */
-    canvas {
-      position: fixed !important;
-      top: 0 !important; left: 0 !important;
-      width: 100% !important; height: 100% !important;
-      z-index: 1 !important;
-      background: transparent !important;
-    }
-
-    /* Paksa A-Scene transparan */
-    a-scene { background: transparent !important; }
-
-    /* Scanner overlay */
+    /* ── Scanner UI ── */
     #ui {
-      position: fixed; inset: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: space-between;
       pointer-events: none;
+      font-family: 'Segoe UI', sans-serif;
     }
-
-    /* Header */
     #hdr {
-      width: 100%;
-      padding: 14px 18px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, transparent);
+      width: 100%; padding: 14px 18px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent);
       display: flex; align-items: center; gap: 10px;
     }
-    .dot { width: 9px; height: 9px; border-radius: 50%; background: #ff3b3b; box-shadow: 0 0 7px #ff3b3b; animation: bl 1s infinite; }
+    .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #ff3b3b; box-shadow: 0 0 7px #ff3b3b;
+      animation: bl 1s infinite; flex-shrink: 0;
+    }
     @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0.15} }
-    #hdr span { color: #fff; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    #hdr span { color:#fff; font-size:.82rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
 
-    /* Frame scanner */
-    #mid { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-
-    .frame { width: 230px; height: 230px; position: relative; }
-    .frame .tl,.frame .tr,.frame .bl,.frame .br { position: absolute; width: 32px; height: 32px; border-style: solid; border-color: #fff; }
-    .frame .tl { top:0; left:0;  border-width: 3px 0 0 3px; }
-    .frame .tr { top:0; right:0; border-width: 3px 3px 0 0; }
-    .frame .bl { bottom:0; left:0;  border-width: 0 0 3px 3px; }
-    .frame .br { bottom:0; right:0; border-width: 0 3px 3px 0; }
-
+    #mid { display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .frame { width:220px; height:220px; position:relative; }
+    .tl,.tr,.bl,.br { position:absolute; width:30px; height:30px; border-style:solid; border-color:#fff; }
+    .tl{top:0;left:0;border-width:3px 0 0 3px}
+    .tr{top:0;right:0;border-width:3px 3px 0 0}
+    .bl{bottom:0;left:0;border-width:0 0 3px 3px}
+    .br{bottom:0;right:0;border-width:0 3px 3px 0}
     .line {
-      position: absolute; left: 5px; right: 5px; height: 2px;
-      background: linear-gradient(90deg, transparent, #00e5ff, transparent);
-      box-shadow: 0 0 8px #00e5ff;
-      animation: scan 2s ease-in-out infinite;
+      position:absolute; left:5px; right:5px; height:2px;
+      background:linear-gradient(90deg,transparent,#00e5ff,transparent);
+      box-shadow:0 0 8px #00e5ff;
+      animation:scan 2s ease-in-out infinite;
     }
-    @keyframes scan { 0%{top:5px;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:calc(100% - 7px);opacity:0} }
-
-    #lbl { color: rgba(255,255,255,0.85); font-size: 0.78rem; letter-spacing: 0.1em; text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
-
+    @keyframes scan{0%{top:5px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:calc(100% - 7px);opacity:0}}
+    #lbl { color:rgba(255,255,255,.9); font-size:.78rem; letter-spacing:.1em; text-shadow:0 1px 6px rgba(0,0,0,.9); }
     #badge {
-      padding: 6px 18px; border-radius: 20px;
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.65); backdrop-filter: blur(5px);
-      transition: all 0.4s;
+      padding:6px 18px; border-radius:20px; font-size:.72rem; font-weight:700;
+      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.2);
+      color:rgba(255,255,255,.7); backdrop-filter:blur(4px); transition:all .4s;
     }
-    #badge.found {
-      background: rgba(0,200,80,0.22); border-color: rgba(0,220,80,0.55);
-      color: #66ff99; box-shadow: 0 0 12px rgba(0,200,80,0.25);
-    }
-
-    /* Footer */
+    #badge.found { background:rgba(0,200,80,.25); border-color:rgba(0,220,80,.6); color:#66ff99; }
     #ftr {
-      width: 100%; padding: 12px 18px 28px;
-      background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, transparent);
-      display: flex; align-items: center; justify-content: center;
-      gap: 12px;
+      width:100%; padding:12px 18px 28px;
+      background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent);
+      display:flex; align-items:center; justify-content:center; gap:12px;
     }
-    #ftr p { color: rgba(255,255,255,0.6); font-size: 0.72rem; line-height: 1.5; max-width: 200px; }
-    #mref { width: 58px; height: 58px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.3); background:#fff; flex-shrink:0; }
+    #ftr p { color:rgba(255,255,255,.65); font-size:.72rem; line-height:1.5; max-width:200px; }
+    #mref { width:56px; height:56px; border-radius:6px; border:2px solid rgba(255,255,255,.3); background:#fff; flex-shrink:0; }
   </style>
 </head>
 <body>
@@ -106,7 +71,6 @@
       <div class="dot"></div>
       <span>AR Scanner Aktif</span>
     </div>
-
     <div id="mid">
       <div class="frame">
         <div class="tl"></div><div class="tr"></div>
@@ -116,10 +80,9 @@
       <div id="lbl">Arahkan ke Hiro Marker</div>
       <div id="badge">🔍 Mencari Marker…</div>
     </div>
-
     <div id="ftr">
-      <img id="mref" src="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" alt="Hiro" />
-      <p>Arahkan kamera ke gambar <strong>Hiro Marker</strong> yang ada di layar laptop.</p>
+      <img id="mref" src="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" alt="Hiro"/>
+      <p>Arahkan ke <strong>Hiro Marker</strong> di layar laptop.</p>
     </div>
   </div>
 
@@ -127,9 +90,9 @@
   <a-scene
     embedded
     arjs="sourceType: webcam; debugUIEnabled: false;"
+    renderer="alpha: true; antialias: true;"
     vr-mode-ui="enabled: false"
     loading-screen="enabled: false"
-    renderer="antialias: true; alpha: true; clearColor: transparent; clearAlpha: 0;"
   >
     <a-entity camera></a-entity>
 
@@ -146,44 +109,75 @@
   </a-scene>
 
   <script>
-    const badge = document.getElementById('badge');
-    const mk    = document.getElementById('mk');
-    mk.addEventListener('markerFound', () => {
-      badge.textContent = '✅ Marker Ditemukan!';
-      badge.classList.add('found');
-    });
-    mk.addEventListener('markerLost', () => {
-      badge.textContent = '🔍 Mencari Marker…';
-      badge.classList.remove('found');
-    });
+    /* ════════════════════════════════════════════════
+       ROOT FIX: Patch Three.js renderer setClearColor
+       agar A-Frame background component tidak bisa
+       menimpa background dengan warna hitam solid.
+    ════════════════════════════════════════════════ */
+    const scene = document.querySelector('a-scene');
 
-    // ── Fix kamera gelap: paksa canvas transparan & video tampil ──
-    document.querySelector('a-scene').addEventListener('loaded', () => {
-      // Canvas harus transparan agar video kamera terlihat
-      const canvas = document.querySelector('canvas');
-      if (canvas) {
-        canvas.style.background = 'transparent';
-        canvas.style.backgroundColor = 'transparent';
-      }
+    scene.addEventListener('loaded', function () {
+      const renderer = this.renderer;
 
-      // Video kamera harus di belakang canvas
+      // 1. Set ke transparan dulu
+      renderer.setClearColor(0x000000, 0);
+      renderer.setClearAlpha(0);
+
+      // 2. PATCH: override setClearColor agar alpha selalu 0
+      //    → A-Frame background component manggil ini tiap frame
+      //    → Kita paksa alpha = 0 supaya canvas selalu transparan
+      const _origSet = renderer.setClearColor.bind(renderer);
+      renderer.setClearColor = function (color, alpha) {
+        _origSet(0x000000, 0); // paksa transparan, abaikan alpha dari caller
+      };
+
+      // 3. Fix video element yang dibuat AR.js secara async
       const fixVideo = () => {
-        const vid = document.querySelector('video');
-        if (vid) {
-          vid.style.position  = 'fixed';
-          vid.style.top       = '0';
-          vid.style.left      = '0';
-          vid.style.width     = '100%';
-          vid.style.height    = '100%';
-          vid.style.objectFit = 'cover';
-          vid.style.zIndex    = '-1';
-        }
+        document.querySelectorAll('video').forEach(function (vid) {
+          vid.style.cssText = [
+            'display:block!important',
+            'position:fixed!important',
+            'top:0!important',
+            'left:0!important',
+            'width:100%!important',
+            'height:100%!important',
+            'object-fit:cover!important',
+            'z-index:0!important',
+            'opacity:1!important',
+            'visibility:visible!important'
+          ].join(';');
+        });
+
+        // Canvas harus di atas video, background transparan
+        document.querySelectorAll('canvas').forEach(function (c) {
+          c.style.cssText = [
+            'position:fixed!important',
+            'top:0!important',
+            'left:0!important',
+            'width:100%!important',
+            'height:100%!important',
+            'z-index:1!important',
+            'background:transparent!important'
+          ].join(';');
+        });
       };
 
       fixVideo();
-      // Coba lagi setelah 500ms karena AR.js inject video async
-      setTimeout(fixVideo, 500);
-      setTimeout(fixVideo, 1500);
+      setTimeout(fixVideo, 300);
+      setTimeout(fixVideo, 1000);
+      setTimeout(fixVideo, 3000);
+    });
+
+    // Marker events
+    const mk = document.getElementById('mk');
+    const badge = document.getElementById('badge');
+    mk.addEventListener('markerFound', function () {
+      badge.textContent = '✅ Marker Ditemukan!';
+      badge.classList.add('found');
+    });
+    mk.addEventListener('markerLost', function () {
+      badge.textContent = '🔍 Mencari Marker…';
+      badge.classList.remove('found');
     });
   </script>
 
