@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>WebAR – Kubus 3D</title>
+  <title>WebAR – Karakter Kartun</title>
 
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.0/aframe/build/aframe-ar.js"></script>
@@ -12,7 +12,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { overflow: hidden; background: transparent; }
 
-    /* ── Scanner UI ── */
     #ui {
       position: fixed; inset: 0; z-index: 100;
       display: flex; flex-direction: column;
@@ -22,45 +21,30 @@
     }
     #hdr {
       width: 100%; padding: 14px 18px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent);
+      background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, transparent);
       display: flex; align-items: center; gap: 10px;
     }
-    .dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: #ff3b3b; box-shadow: 0 0 7px #ff3b3b;
-      animation: bl 1s infinite; flex-shrink: 0;
-    }
-    @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0.15} }
-    #hdr span { color:#fff; font-size:.82rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+    .dot { width:9px;height:9px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 7px #ff3b3b;animation:bl 1s infinite;flex-shrink:0; }
+    @keyframes bl{0%,100%{opacity:1}50%{opacity:.15}}
+    #hdr span { color:#fff;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase; }
 
-    #mid { display:flex; flex-direction:column; align-items:center; gap:16px; }
-    .frame { width:220px; height:220px; position:relative; }
-    .tl,.tr,.bl,.br { position:absolute; width:30px; height:30px; border-style:solid; border-color:#fff; }
+    #mid { display:flex;flex-direction:column;align-items:center;gap:14px; }
+    .frame { width:200px;height:200px;position:relative; }
+    .tl,.tr,.bl,.br{position:absolute;width:28px;height:28px;border-style:solid;border-color:rgba(255,255,255,0.8);}
     .tl{top:0;left:0;border-width:3px 0 0 3px}
     .tr{top:0;right:0;border-width:3px 3px 0 0}
     .bl{bottom:0;left:0;border-width:0 0 3px 3px}
     .br{bottom:0;right:0;border-width:0 3px 3px 0}
-    .line {
-      position:absolute; left:5px; right:5px; height:2px;
-      background:linear-gradient(90deg,transparent,#00e5ff,transparent);
-      box-shadow:0 0 8px #00e5ff;
-      animation:scan 2s ease-in-out infinite;
-    }
+    .line{position:absolute;left:5px;right:5px;height:2px;background:linear-gradient(90deg,transparent,#facc15,transparent);box-shadow:0 0 8px #facc15;animation:scan 2s ease-in-out infinite;}
     @keyframes scan{0%{top:5px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:calc(100% - 7px);opacity:0}}
-    #lbl { color:rgba(255,255,255,.9); font-size:.78rem; letter-spacing:.1em; text-shadow:0 1px 6px rgba(0,0,0,.9); }
-    #badge {
-      padding:6px 18px; border-radius:20px; font-size:.72rem; font-weight:700;
-      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.2);
-      color:rgba(255,255,255,.7); backdrop-filter:blur(4px); transition:all .4s;
-    }
-    #badge.found { background:rgba(0,200,80,.25); border-color:rgba(0,220,80,.6); color:#66ff99; }
-    #ftr {
-      width:100%; padding:12px 18px 28px;
-      background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent);
-      display:flex; align-items:center; justify-content:center; gap:12px;
-    }
-    #ftr p { color:rgba(255,255,255,.65); font-size:.72rem; line-height:1.5; max-width:200px; }
-    #mref { width:56px; height:56px; border-radius:6px; border:2px solid rgba(255,255,255,.3); background:#fff; flex-shrink:0; }
+
+    #lbl{color:rgba(255,255,255,.9);font-size:.78rem;letter-spacing:.1em;text-shadow:0 1px 6px rgba(0,0,0,.9);}
+    #badge{padding:6px 18px;border-radius:20px;font-size:.72rem;font-weight:700;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);backdrop-filter:blur(4px);transition:all .4s;}
+    #badge.found{background:rgba(0,200,80,.25);border-color:rgba(0,220,80,.6);color:#66ff99;}
+
+    #ftr{width:100%;padding:12px 18px 28px;background:linear-gradient(0deg,rgba(0,0,0,.65) 0%,transparent);display:flex;align-items:center;justify-content:center;gap:12px;}
+    #ftr p{color:rgba(255,255,255,.65);font-size:.72rem;line-height:1.5;max-width:200px;}
+    #mref{width:54px;height:54px;border-radius:6px;border:2px solid rgba(255,255,255,.3);background:#fff;flex-shrink:0;}
   </style>
 </head>
 <body>
@@ -69,7 +53,7 @@
   <div id="ui">
     <div id="hdr">
       <div class="dot"></div>
-      <span>AR Scanner Aktif</span>
+      <span>✨ AR Karakter Aktif</span>
     </div>
     <div id="mid">
       <div class="frame">
@@ -82,7 +66,7 @@
     </div>
     <div id="ftr">
       <img id="mref" src="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" alt="Hiro"/>
-      <p>Arahkan ke <strong>Hiro Marker</strong> di layar laptop.</p>
+      <p>Scan marker ini untuk memunculkan karakter kartun 3D!</p>
     </div>
   </div>
 
@@ -97,85 +81,215 @@
     <a-entity camera></a-entity>
 
     <a-marker preset="hiro" id="mk">
-      <a-box
-        position="0 0.5 0"
-        width="0.5" height="0.5" depth="0.5"
-        color="#00e5ff"
-        material="metalness:0.5; roughness:0.2;"
-        animation__rot="property:rotation; to:0 360 0; loop:true; dur:3000; easing:linear;"
-        animation__float="property:position; from:0 0.4 0; to:0 0.75 0; loop:true; dir:alternate; dur:1500; easing:easeInOutSine;"
-      ></a-box>
+
+      <!--
+      ════════════════════════════════════════════
+        KARAKTER KARTUN  (mirip Upin)
+        Dibangun dari A-Frame primitives murni
+      ════════════════════════════════════════════
+      -->
+      <a-entity
+        id="karakter"
+        position="0 0 0"
+        animation__float="property:position; from:0 0.05 0; to:0 0.2 0; loop:true; dir:alternate; dur:1200; easing:easeInOutSine;"
+        animation__rot="property:rotation; from:0 -15 0; to:0 15 0; loop:true; dir:alternate; dur:2000; easing:easeInOutSine;"
+        scale="0.55 0.55 0.55"
+      >
+
+        <!-- ───── KEPALA ───── -->
+        <a-sphere
+          position="0 1.75 0"
+          radius="0.42"
+          color="#D4956A"
+          material="metalness:0; roughness:1;"
+        ></a-sphere>
+
+        <!-- Telinga kiri -->
+        <a-sphere position="-0.41 1.72 0" radius="0.13" color="#C07850" material="roughness:1;"></a-sphere>
+        <!-- Telinga kanan -->
+        <a-sphere position=" 0.41 1.72 0" radius="0.13" color="#C07850" material="roughness:1;"></a-sphere>
+
+        <!-- Rambut satu (ciri khas Upin!) -->
+        <a-cylinder
+          position="0 2.19 -0.04"
+          radius="0.04" height="0.22"
+          color="#1a1a1a"
+          rotation="-15 0 0"
+          material="roughness:1;"
+        ></a-cylinder>
+        <!-- Ujung rambut (bulat) -->
+        <a-sphere position="0.01 2.32 -0.08" radius="0.055" color="#1a1a1a" material="roughness:1;"></a-sphere>
+
+        <!-- ── Mata kiri (putih) ── -->
+        <a-sphere position="-0.14 1.80 0.37" radius="0.11" color="#ffffff" material="roughness:0.5;"></a-sphere>
+        <!-- Pupil kiri -->
+        <a-sphere position="-0.14 1.80 0.46" radius="0.065" color="#1a1a1a" material="roughness:0.8;"></a-sphere>
+        <!-- Kilat pupil kiri -->
+        <a-sphere position="-0.10 1.83 0.50" radius="0.022" color="#ffffff" material="roughness:0.5;"></a-sphere>
+
+        <!-- ── Mata kanan (putih) ── -->
+        <a-sphere position=" 0.14 1.80 0.37" radius="0.11" color="#ffffff" material="roughness:0.5;"></a-sphere>
+        <!-- Pupil kanan -->
+        <a-sphere position=" 0.14 1.80 0.46" radius="0.065" color="#1a1a1a" material="roughness:0.8;"></a-sphere>
+        <!-- Kilat pupil kanan -->
+        <a-sphere position=" 0.18 1.83 0.50" radius="0.022" color="#ffffff" material="roughness:0.5;"></a-sphere>
+
+        <!-- ── Alis kiri ── -->
+        <a-box position="-0.14 1.94 0.37" width="0.15" height="0.04" depth="0.04"
+          color="#5a3010" rotation="0 0 8" material="roughness:1;"></a-box>
+        <!-- ── Alis kanan ── -->
+        <a-box position=" 0.14 1.94 0.37" width="0.15" height="0.04" depth="0.04"
+          color="#5a3010" rotation="0 0 -8" material="roughness:1;"></a-box>
+
+        <!-- ── Hidung ── -->
+        <a-sphere position="0 1.68 0.41" radius="0.055" color="#C07850" material="roughness:1;"></a-sphere>
+
+        <!-- ── Mulut (senyum) ── -->
+        <!-- pakai 3 sphere kecil membentuk senyuman -->
+        <a-sphere position="-0.10 1.56 0.40" radius="0.03" color="#8B2020" material="roughness:1;"></a-sphere>
+        <a-sphere position="  0   1.53 0.41" radius="0.03" color="#8B2020" material="roughness:1;"></a-sphere>
+        <a-sphere position=" 0.10 1.56 0.40" radius="0.03" color="#8B2020" material="roughness:1;"></a-sphere>
+        <!-- Gigi -->
+        <a-box position="0 1.57 0.41" width="0.14" height="0.04" depth="0.03"
+          color="#ffffff" material="roughness:0.5;"></a-box>
+
+        <!-- ── Pipi merah (lucu) ── -->
+        <a-sphere position="-0.28 1.65 0.32" radius="0.07" color="#FF9999"
+          material="opacity:0.55; transparent:true; roughness:1;"></a-sphere>
+        <a-sphere position=" 0.28 1.65 0.32" radius="0.07" color="#FF9999"
+          material="opacity:0.55; transparent:true; roughness:1;"></a-sphere>
+
+        <!-- ───── BADAN (baju merah) ───── -->
+        <a-cylinder
+          position="0 1.10 0"
+          radius="0.30" height="0.55"
+          color="#E63946"
+          material="roughness:0.8;"
+        ></a-cylinder>
+
+        <!-- Kerah baju -->
+        <a-torus
+          position="0 1.36 0"
+          rotation="90 0 0"
+          radius="0.16" radius-tubular="0.04"
+          color="#ffffff"
+          material="roughness:0.6;"
+        ></a-torus>
+
+        <!-- Kancing baju (3 buah) -->
+        <a-sphere position="0 1.22 0.29" radius="0.025" color="#ffffff" material="roughness:0.5;"></a-sphere>
+        <a-sphere position="0 1.10 0.30" radius="0.025" color="#ffffff" material="roughness:0.5;"></a-sphere>
+        <a-sphere position="0 0.98 0.29" radius="0.025" color="#ffffff" material="roughness:0.5;"></a-sphere>
+
+        <!-- ───── TANGAN KIRI ───── -->
+        <a-cylinder
+          position="-0.44 1.18 0"
+          radius="0.09" height="0.42"
+          rotation="0 0 28"
+          color="#D4956A"
+          material="roughness:1;"
+          animation="property:rotation; from:0 0 28; to:0 0 45; loop:true; dir:alternate; dur:1000; easing:easeInOutSine;"
+        ></a-cylinder>
+        <!-- Tangan kiri bawah -->
+        <a-sphere position="-0.60 0.98 0" radius="0.10" color="#D4956A" material="roughness:1;"></a-sphere>
+
+        <!-- ───── TANGAN KANAN ───── -->
+        <a-cylinder
+          position="0.44 1.18 0"
+          radius="0.09" height="0.42"
+          rotation="0 0 -28"
+          color="#D4956A"
+          material="roughness:1;"
+          animation="property:rotation; from:0 0 -28; to:0 0 -45; loop:true; dir:alternate; dur:1000; easing:easeInOutSine; delay:500;"
+        ></a-cylinder>
+        <!-- Tangan kanan bawah -->
+        <a-sphere position="0.60 0.98 0" radius="0.10" color="#D4956A" material="roughness:1;"></a-sphere>
+
+        <!-- ───── CELANA (biru) ───── -->
+        <!-- Celana kiri -->
+        <a-cylinder
+          position="-0.12 0.68 0"
+          radius="0.13" height="0.40"
+          color="#2563EB"
+          material="roughness:0.9;"
+          animation="property:rotation; from:0 0 0; to:5 0 0; loop:true; dir:alternate; dur:800; easing:easeInOutSine; delay:200;"
+        ></a-cylinder>
+        <!-- Celana kanan -->
+        <a-cylinder
+          position="0.12 0.68 0"
+          radius="0.13" height="0.40"
+          color="#2563EB"
+          material="roughness:0.9;"
+          animation="property:rotation; from:0 0 0; to:-5 0 0; loop:true; dir:alternate; dur:800; easing:easeInOutSine; delay:600;"
+        ></a-cylinder>
+
+        <!-- ───── SEPATU (hitam) ───── -->
+        <!-- Sepatu kiri -->
+        <a-box
+          position="-0.13 0.44 0.07"
+          width="0.22" height="0.10" depth="0.30"
+          color="#1a1a1a"
+          material="roughness:0.7;"
+        ></a-box>
+        <!-- Sepatu kanan -->
+        <a-box
+          position=" 0.13 0.44 0.07"
+          width="0.22" height="0.10" depth="0.30"
+          color="#1a1a1a"
+          material="roughness:0.7;"
+        ></a-box>
+
+        <!-- ── Shadow / bayangan di bawah ── -->
+        <a-circle
+          position="0 0.39 0"
+          radius="0.38"
+          rotation="-90 0 0"
+          color="#000000"
+          material="opacity:0.25; transparent:true; shader:flat;"
+        ></a-circle>
+
+      </a-entity>
+      <!-- end #karakter -->
+
     </a-marker>
   </a-scene>
 
   <script>
-    /* ════════════════════════════════════════════════
-       ROOT FIX: Patch Three.js renderer setClearColor
-       agar A-Frame background component tidak bisa
-       menimpa background dengan warna hitam solid.
-    ════════════════════════════════════════════════ */
+    /* ── Fix kamera hitam: patch Three.js renderer ── */
     const scene = document.querySelector('a-scene');
 
     scene.addEventListener('loaded', function () {
       const renderer = this.renderer;
-
-      // 1. Set ke transparan dulu
       renderer.setClearColor(0x000000, 0);
       renderer.setClearAlpha(0);
 
-      // 2. PATCH: override setClearColor agar alpha selalu 0
-      //    → A-Frame background component manggil ini tiap frame
-      //    → Kita paksa alpha = 0 supaya canvas selalu transparan
-      const _origSet = renderer.setClearColor.bind(renderer);
+      // Patch agar A-Frame background component tidak bisa set hitam
+      const _orig = renderer.setClearColor.bind(renderer);
       renderer.setClearColor = function (color, alpha) {
-        _origSet(0x000000, 0); // paksa transparan, abaikan alpha dari caller
+        _orig(0x000000, 0);
       };
 
-      // 3. Fix video element yang dibuat AR.js secara async
-      const fixVideo = () => {
-        document.querySelectorAll('video').forEach(function (vid) {
-          vid.style.cssText = [
-            'display:block!important',
-            'position:fixed!important',
-            'top:0!important',
-            'left:0!important',
-            'width:100%!important',
-            'height:100%!important',
-            'object-fit:cover!important',
-            'z-index:0!important',
-            'opacity:1!important',
-            'visibility:visible!important'
-          ].join(';');
+      // Fix video & canvas
+      const fix = () => {
+        document.querySelectorAll('video').forEach(v => {
+          v.style.cssText = 'display:block!important;position:fixed!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:0!important;opacity:1!important;';
         });
-
-        // Canvas harus di atas video, background transparan
-        document.querySelectorAll('canvas').forEach(function (c) {
-          c.style.cssText = [
-            'position:fixed!important',
-            'top:0!important',
-            'left:0!important',
-            'width:100%!important',
-            'height:100%!important',
-            'z-index:1!important',
-            'background:transparent!important'
-          ].join(';');
+        document.querySelectorAll('canvas').forEach(c => {
+          c.style.background = 'transparent';
+          c.style.zIndex = '1';
         });
       };
-
-      fixVideo();
-      setTimeout(fixVideo, 300);
-      setTimeout(fixVideo, 1000);
-      setTimeout(fixVideo, 3000);
+      fix(); setTimeout(fix, 400); setTimeout(fix, 1500);
     });
 
-    // Marker events
-    const mk = document.getElementById('mk');
+    /* ── Marker events ── */
+    const mk    = document.getElementById('mk');
     const badge = document.getElementById('badge');
-    mk.addEventListener('markerFound', function () {
-      badge.textContent = '✅ Marker Ditemukan!';
+    mk.addEventListener('markerFound', () => {
+      badge.textContent = '✅ Karakter Muncul!';
       badge.classList.add('found');
     });
-    mk.addEventListener('markerLost', function () {
+    mk.addEventListener('markerLost', () => {
       badge.textContent = '🔍 Mencari Marker…';
       badge.classList.remove('found');
     });
